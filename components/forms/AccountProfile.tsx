@@ -44,25 +44,15 @@ const AccountProfile = ({ user, btnTitle }: Props) => {
 
 	const [files, setFiles] = useState<File[]>([])
 
-	const form = useForm({
+	const form = useForm<z.infer<typeof UserValidation>>({
 		resolver: zodResolver(UserValidation),
 		defaultValues: {
-			profile_photo: user?.image || '',
-			name: user?.name || '',
-			username: user?.username || '',
-			bio: user?.bio || '',
+			profile_photo: user?.image ? user.image : '',
+			name: user?.name ? user.name : '',
+			username: user?.username ? user.username : '',
+			bio: user?.bio ? user.bio : '',
 		},
 	})
-
-	// const form = useForm<z.infer<typeof UserValidation>>({
-	// 	resolver: zodResolver(UserValidation),
-	// 	defaultValues: {
-	// 		profile_photo: user?.image ? user.image : '',
-	// 		name: user?.name ? user.name : '',
-	// 		username: user?.username ? user.username : '',
-	// 		bio: user?.bio ? user.bio : '',
-	// 	},
-	// })
 
 	const onSubmit = async (values: z.infer<typeof UserValidation>) => {
 		const blob = values.profile_photo
